@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSS Ai - Smart Chatbot</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #e5ddd5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 450px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 85vh;
+        }
+        .chat-header {
+            background: #008069;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #efeae2;
+        }
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .bot-message {
+            background: #ffffff;
+            color: #333;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .user-message {
+            background: #d9fdd3;
+            color: #111;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .chat-input-container {
+            display: flex;
+            padding: 12px;
+            background: #f0f2f5;
+            align-items: center;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 24px;
+            outline: none;
+            font-size: 1rem;
+            background: #ffffff;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+        .send-btn {
+            background: #008069;
+            color: white;
+            border: none;
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .send-btn:hover {
+            background: #005c4b;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #bcc0c4; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        🤖 MSS Ai
+    </div>
+    <div class="chat-box" id="chat-box">
+        <div class="message bot-message">Hello! I am <strong>MSS Ai</strong>. How can I help you today?</div>
+    </div>
+    <div class="chat-input-container">
+        <input type="text" id="user-input" class="chat-input" placeholder="Type your message..." autocomplete="off">
+        <button id="send-btn" class="send-btn">➤</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    function addMessage(text, sender) {
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message");
+        msgDiv.classList.add(sender === "user" ? "user-message" : "bot-message");
+        msgDiv.innerHTML = text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function handleSend() {
+        const text = userInput.value.trim();
+        if (text !== "") {
+            addMessage(text, "user");
+            userInput.value = "";
+            
+            setTimeout(() => {
+                let botReply = "";
+                let lowerText = text.toLowerCase();
+                
+                if(lowerText.includes("name")) {
+                    botReply = "My name is <strong>MSS Ai</strong>.";
+                } else if(lowerText.includes("how are you")) {
+                    botReply = "I am doing great! How about you?";
+                } else {
+                    botReply = "I am a demo bot. Please connect me to an API for smarter replies.";
+                }
+
+                addMessage(botReply, "bot");
+            }, 1000);
+        }
+    }
+
+    sendBtn.addEventListener("click", handleSend);
+
+    userInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            handleSend();
+        }
+    });
+</script>
+
+</body>
+</html>
+
